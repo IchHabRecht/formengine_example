@@ -27,8 +27,6 @@ namespace IchHabRecht\FormengineExample\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -44,16 +42,11 @@ class TogglePasswordInputElement extends AbstractFormElement
      */
     public function render()
     {
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $languageService = $this->getLanguageService();
-
         $table = $this->data['tableName'];
         $fieldName = $this->data['fieldName'];
         $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
-        $isDateField = false;
 
         $config = $parameterArray['fieldConf']['config'];
         $specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
@@ -62,77 +55,6 @@ class TogglePasswordInputElement extends AbstractFormElement
         $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
         $classes = [];
         $attributes = [];
-
-        // set all date times available
-        $dateFormats = [
-            'date' => '%d-%m-%Y',
-            'year' => '%Y',
-            'time' => '%H:%M',
-            'timesec' => '%H:%M:%S',
-        ];
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat']) {
-            $dateFormats['date'] = '%m-%d-%Y';
-        }
-        $dateFormats['datetime'] = $dateFormats['time'] . ' ' . $dateFormats['date'];
-        $dateFormats['datetimesec'] = $dateFormats['timesec'] . ' ' . $dateFormats['date'];
-
-        // readonly
-        if ($config['readOnly']) {
-            $itemFormElValue = $parameterArray['itemFormElValue'];
-            if (in_array('date', $evalList)) {
-                $config['format'] = 'date';
-            } elseif (in_array('datetime', $evalList)) {
-                $config['format'] = 'datetime';
-            } elseif (in_array('time', $evalList)) {
-                $config['format'] = 'time';
-            }
-            if (in_array('password', $evalList)) {
-                $itemFormElValue = $itemFormElValue ? '*********' : '';
-            }
-            $options = $this->data;
-            $options['parameterArray'] = [
-                'fieldConf' => [
-                    'config' => $config,
-                ],
-                'itemFormElValue' => $itemFormElValue,
-            ];
-            $options['renderType'] = 'none';
-
-            return $this->nodeFactory->create($options)->render();
-        }
-
-        if (in_array('datetime', $evalList, true)
-            || in_array('date', $evalList)
-        ) {
-            $classes[] = 't3js-datetimepicker';
-            $isDateField = true;
-            if (in_array('datetime', $evalList)) {
-                $attributes['data-date-type'] = 'datetime';
-                $dateFormat = $dateFormats['datetime'];
-            } elseif (in_array('date', $evalList)) {
-                $attributes['data-date-type'] = 'date';
-                $dateFormat = $dateFormats['date'];
-            }
-            if ($parameterArray['itemFormElValue'] > 0) {
-                $parameterArray['itemFormElValue'] += date('Z', $parameterArray['itemFormElValue']);
-            }
-            if (isset($config['range']['lower'])) {
-                $attributes['data-date-minDate'] = (int)$config['range']['lower'];
-            }
-            if (isset($config['range']['upper'])) {
-                $attributes['data-date-maxDate'] = (int)$config['range']['upper'];
-            }
-        } elseif (in_array('time', $evalList)) {
-            $dateFormat = $dateFormats['time'];
-            $isDateField = true;
-            $classes[] = 't3js-datetimepicker';
-            $attributes['data-date-type'] = 'time';
-        } elseif (in_array('timesec', $evalList)) {
-            $dateFormat = $dateFormats['timesec'];
-            $isDateField = true;
-            $classes[] = 't3js-datetimepicker';
-            $attributes['data-date-type'] = 'timesec';
-        }
 
         // @todo: The whole eval handling is a mess and needs refactoring
         foreach ($evalList as $func) {
@@ -214,19 +136,6 @@ class TogglePasswordInputElement extends AbstractFormElement
                     }
                 }
             }
-        }
-
-        // add HTML wrapper
-        if ($isDateField) {
-            $html = '
-				<div class="input-group">
-					' . $html . '
-					<span class="input-group-btn">
-						<label class="btn btn-default" for="' . $attributes['id'] . '">
-							' . $iconFactory->getIcon('actions-edit-pick-date', Icon::SIZE_SMALL)->render() . '
-						</label>
-					</span>
-				</div>';
         }
 
         // Wrap a wizard around the item?
