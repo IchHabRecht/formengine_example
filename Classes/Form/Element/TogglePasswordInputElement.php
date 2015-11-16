@@ -42,18 +42,11 @@ class TogglePasswordInputElement extends AbstractFormElement
      */
     public function render()
     {
-        $table = $this->data['tableName'];
-        $fieldName = $this->data['fieldName'];
-        $row = $this->data['databaseRow'];
-        $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
 
+        $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
-        $specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
-        $size = MathUtility::forceIntegerInRange($config['size'] ?: $this->defaultInputWidth, $this->minimumInputWidth,
-            $this->maxInputWidth);
         $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
-        $classes = [];
         $attributes = [];
 
         // @todo: The whole eval handling is a mess and needs refactoring
@@ -79,17 +72,19 @@ class TogglePasswordInputElement extends AbstractFormElement
                     }
             }
         }
-        $paramsList = [
-            'field' => $parameterArray['itemFormElName'],
-            'evalList' => implode(',', $evalList),
-            'is_in' => trim($config['is_in']),
-        ];
+
         // set classes
+        $classes = [];
         $classes[] = 'form-control';
         $classes[] = 't3js-clearable';
         $classes[] = 'hasDefaultValue';
 
         // calculate attributes
+        $paramsList = [
+            'field' => $parameterArray['itemFormElName'],
+            'evalList' => implode(',', $evalList),
+            'is_in' => trim($config['is_in']),
+        ];
         $attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString($config);
         $attributes['data-formengine-input-params'] = json_encode($paramsList);
         $attributes['data-formengine-input-name'] = htmlspecialchars($parameterArray['itemFormElName']);
@@ -142,15 +137,17 @@ class TogglePasswordInputElement extends AbstractFormElement
         $html = $this->renderWizards(
             [$html],
             $config['wizards'],
-            $table,
-            $row,
-            $fieldName,
+            $this->data['tableName'],
+            $this->data['databaseRow'],
+            $this->data['fieldName'],
             $parameterArray,
             $parameterArray['itemFormElName'],
-            $specConf
+            BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras'])
         );
 
         // Add a wrapper to remain maximum width
+        $size = MathUtility::forceIntegerInRange($config['size'] ?: $this->defaultInputWidth, $this->minimumInputWidth,
+            $this->maxInputWidth);
         $width = (int)$this->formMaxWidth($size);
         $html = '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px"' : '') . '>' . $html . '</div>';
         $resultArray['html'] = $html;
