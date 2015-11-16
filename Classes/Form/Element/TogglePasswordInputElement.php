@@ -43,6 +43,7 @@ class TogglePasswordInputElement extends AbstractFormElement
     public function render()
     {
         $resultArray = $this->initializeResultArray();
+        $resultArray['requireJsModules'] = ['TYPO3/CMS/FormengineExample/PasswordToggler'];
 
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
