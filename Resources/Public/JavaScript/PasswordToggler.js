@@ -22,17 +22,17 @@ define(['jquery'], function($) {
 					.append(
 						$('<label class="btn btn-default">')
 						.attr('for', $this.attr('id'))
-						.text('SHOW')
+						.text(FormengineExample.lang['show'])
 						.on('click', function() {
 							var $this = $(this),
 								$input = $('input#' + $this.attr('for'));
 
 							if ($input.attr('type') === 'password') {
 								$input.attr('type', 'text');
-								$this.text('HIDE');
+								$this.text(FormengineExample.lang['hide']);
 							} else {
 								$input.attr('type', 'password');
-								$this.text('SHOW');
+								$this.text(FormengineExample.lang['show']);
 							}
 						})
 					)

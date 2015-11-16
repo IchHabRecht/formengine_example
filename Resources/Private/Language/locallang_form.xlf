@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file source-language="en" datatype="plaintext" original="messages" date="2015-11-16T23:37:14Z" product-name="formengine_example">
+		<header />
+		<body>
+			<trans-unit id="hide">
+				<source>HIDE</source>
+			</trans-unit>
+			<trans-unit id="show">
+				<source>SHOW</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
