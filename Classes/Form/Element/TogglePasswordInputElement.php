@@ -47,7 +47,11 @@ class TogglePasswordInputElement extends AbstractFormElement
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
         $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
-        $attributes = [];
+        $attributes = [
+            'type' => 'password',
+            'value' => '********',
+            'autocomplete' => 'off',
+        ];
 
         // @todo: The whole eval handling is a mess and needs refactoring
         foreach ($evalList as $func) {
@@ -89,7 +93,6 @@ class TogglePasswordInputElement extends AbstractFormElement
         $attributes['data-formengine-input-params'] = json_encode($paramsList);
         $attributes['data-formengine-input-name'] = htmlspecialchars($parameterArray['itemFormElName']);
         $attributes['id'] = StringUtility::getUniqueId('formengine-input-');
-        $attributes['value'] = '';
         if (isset($config['max']) && (int)$config['max'] > 0) {
             $attributes['maxlength'] = (int)$config['max'];
         }
@@ -113,7 +116,7 @@ class TogglePasswordInputElement extends AbstractFormElement
         }
 
         $html = '
-			<input type="text"'
+			<input'
             . $attributeString
             . $parameterArray['onFocus'] . ' />';
 
