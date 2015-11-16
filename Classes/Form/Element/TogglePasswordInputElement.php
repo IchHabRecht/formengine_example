@@ -48,6 +48,9 @@ class TogglePasswordInputElement extends AbstractFormElement
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
         $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
+        $evalList = array_filter($evalList, function ($item) {
+            return $item !== 'password';
+        });
         $attributes = [
             'type' => 'password',
             'value' => '********',
