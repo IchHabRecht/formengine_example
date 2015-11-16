@@ -79,6 +79,7 @@ class TogglePasswordInputElement extends AbstractFormElement
 
         // set classes
         $classes = [];
+        $classes[] = 'toggle-password-field';
         $classes[] = 'form-control';
         $classes[] = 't3js-clearable';
         $classes[] = 'hasDefaultValue';
