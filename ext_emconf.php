@@ -35,6 +35,13 @@ $EM_CONF[$_EXTKEY] = array (
     array (
     ),
   ),
+  'autoload' =>
+  array(
+    'psr-4' =>
+    array(
+      'IchHabRecht\\FormengineExample\\' => 'Classes',
+    ),
+  ),
   '_md5_values_when_last_written' => 'a:1:{s:12:"ext_icon.gif";s:4:"df08";}',
 );
 
