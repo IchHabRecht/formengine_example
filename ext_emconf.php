@@ -3,7 +3,7 @@
 /***************************************************************
  * Extension Manager/Repository config file for ext "formengine_example".
  *
- * Auto generated 16-11-2015 18:12
+ * Auto generated 17-11-2015 14:01
  *
  * Manual updates:
  * Only the data in the array - everything else is removed by next
@@ -35,13 +35,13 @@ $EM_CONF[$_EXTKEY] = array (
     array (
     ),
   ),
-  'autoload' =>
-  array(
-    'psr-4' =>
-    array(
+  'autoload' => 
+  array (
+    'psr-4' => 
+    array (
       'IchHabRecht\\FormengineExample\\' => 'Classes',
     ),
   ),
-  '_md5_values_when_last_written' => 'a:1:{s:12:"ext_icon.gif";s:4:"df08";}',
+  '_md5_values_when_last_written' => 'a:6:{s:9:"ChangeLog";s:4:"ff5f";s:12:"ext_icon.gif";s:4:"df08";s:17:"ext_localconf.php";s:4:"f554";s:51:"Classes/Form/Element/TogglePasswordInputElement.php";s:4:"e111";s:45:"Resources/Private/Language/locallang_form.xlf";s:4:"59c5";s:46:"Resources/Public/JavaScript/PasswordToggler.js";s:4:"4c80";}',
 );
 
