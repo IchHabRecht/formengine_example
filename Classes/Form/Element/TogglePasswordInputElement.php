@@ -45,8 +45,12 @@ class TogglePasswordInputElement extends AbstractFormElement
     public function render()
     {
         $resultArray = $this->initializeResultArray();
-        $resultArray['requireJsModules'] = ['TYPO3/CMS/FormengineExample/PasswordToggler'];
-        $resultArray = $this->createJavaScriptLanguageLabels($resultArray);
+        $resultArray['requireJsModules'][] = [
+            'TYPO3/CMS/FormengineExample/PasswordToggler' => 'function(PasswordToggler) {
+                PasswordToggler.initialize();
+            }'
+        ];
+        $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:formengine_example/Resources/Private/Language/locallang_form.xlf';
 
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
@@ -162,49 +166,6 @@ class TogglePasswordInputElement extends AbstractFormElement
         $width = (int)$this->formMaxWidth($size);
         $html = '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px"' : '') . '>' . $html . '</div>';
         $resultArray['html'] = $html;
-
-        return $resultArray;
-    }
-
-    /**
-     * Add an own language object with needed labels
-     *
-     * @param array $resultArray
-     * @return array
-     */
-    protected function createJavaScriptLanguageLabels(array $resultArray)
-    {
-        /** @var $languageFactory LocalizationFactory */
-        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-        $language = $GLOBALS['LANG']->lang;
-        $localizationArray = $languageFactory->getParsedData(
-            'EXT:formengine_example/Resources/Private/Language/locallang_form.xlf',
-            $language,
-            'utf-8',
-            1
-        );
-        if (is_array($localizationArray) && !empty($localizationArray)) {
-            if (!empty($localizationArray[$language])) {
-                $xlfLabelArray = $localizationArray['default'];
-                ArrayUtility::mergeRecursiveWithOverrule($xlfLabelArray, $localizationArray[$language], true, false);
-            } else {
-                $xlfLabelArray = $localizationArray['default'];
-            }
-        } else {
-            $xlfLabelArray = [];
-        }
-        $labelArray = [];
-        foreach ($xlfLabelArray as $key => $value) {
-            if (isset($value[0]['target'])) {
-                $labelArray[$key] = $value[0]['target'];
-            } else {
-                $labelArray[$key] = '';
-            }
-        }
-
-        $javaScriptString = 'var FormengineExample = new Object();' . LF;
-        $javaScriptString .= 'FormengineExample.lang = ' . json_encode($labelArray) . LF;
-        $resultArray['additionalJavaScriptPost'][] = $javaScriptString;
 
         return $resultArray;
     }
