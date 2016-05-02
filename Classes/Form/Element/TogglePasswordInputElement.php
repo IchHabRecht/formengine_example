@@ -61,7 +61,7 @@ class TogglePasswordInputElement extends AbstractFormElement
         $attributes = [
             'type' => 'password',
             'value' => '********',
-            'autocomplete' => 'off',
+            'autocomplete' => htmlspecialchars('new-' . $this->data['fieldName']),
         ];
 
         // @todo: The whole eval handling is a mess and needs refactoring
@@ -115,10 +115,6 @@ class TogglePasswordInputElement extends AbstractFormElement
         // This is the EDITABLE form field.
         if (!empty($config['placeholder'])) {
             $attributes['placeholder'] = trim($config['placeholder']);
-        }
-
-        if (isset($config['autocomplete'])) {
-            $attributes['autocomplete'] = empty($config['autocomplete']) ? 'off' : 'on';
         }
 
         // Build the attribute string
